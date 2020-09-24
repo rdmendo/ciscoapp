@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block forms %}
+
+<form action="/dhcp" method="POST" >
+    {{form.hidden_tag()}}
+    <!-- <div class="form-group"> -->
+        {{form.network_address.label}}
+        {{form.network_address(class="form-control form-control-sm")}}
+        <br>
+        {{form.pool.label}}
+        {{form.pool(class="form-control form-control-sm")}}
+        <br>
+        {{form.private_ip.label}}
+        {{form.private_ip(class="form-control form-control-sm")}}
+        <br>
+        {{form.interface.label}}
+        {{form.interface(class="form-control form-control-sm")}}
+        <br>
+        {{form.submit(class="btn btn-success")}}
+        <br>
+    <!-- </div>      -->
+</form> 
+{% endblock forms %}
+
+
+{% block result %}
+<textarea class="form-control text-light" id="textarea" rows="20"
+            style=" white-space: pre-wrap; background-color:inherit !important; "> {{result}} </textarea>
+{% endblock result %}

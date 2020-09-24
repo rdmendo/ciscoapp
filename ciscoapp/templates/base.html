@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='css/material-design-color-palette.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/animate.css') }}">
+
+    <style type="text/css">
+        html {
+            overflow: scroll;
+            overflow-x: hidden;
+            }
+            ::-webkit-scrollbar {
+            width: 0px; }
+
+        </style>
+</head>
+
+<body>
+    <div class="overflow-hidden"></div>
+    <!-- Header -->
+    <header id="header">
+        <div class="header__logo">SPARC NOC AUTOMATION</div>
+        <div class="header__links">
+            <a href="/">Home</a>
+            <a href="">Sign in</a>
+            <a href="">Register</a>
+        </div>
+    </header>
+
+    <!-- sidebar -->
+    <main id="main">
+        <aside id="sidebar" data-spy="affix" data-offset-top="72">
+            <ul class="sidebar__links">
+                <li>
+                    <span class="sidebar__title">Network Automation</span>
+                    <ul>
+                        <li><a href="#">Incapsula API</a></li>
+                        <li><a href="#"> DDOS Mitigation</a></li>
+                        <li><a href="#">Static Rerouting</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <span class="sidebar__title">Config Generators</span>
+                    <ul>
+                        <li><a href="dhcp">Dhcp Template</a></li>
+                        <li><a href="#">Qos Template</a></li>
+                        <li><a href="#">Cloudware Template</a></li>
+                        <li><a href="#">BGP Template</a></li>
+                        <li><a href="#">Cisco Template</a></li>
+                        <li><a href="#">Sangfor Template</a></li>
+                    </ul>
+                </li>
+    </main>
+    <!-- endof sidebar -->
+    <br>
+    <br>
+    <div class="container">
+        {% block body %}
+        {% endblock body %}
+    </div>
+
+    <div class="container">
+        <div class="col-12 col-md-3 col-sm-3">
+            {% block forms %}
+            {% endblock forms %}
+        </div>
+
+        <div class="col-12 col-md-9 col-sm-9">
+            {% block result %}
+            {% endblock result %}
+        </div>
+    </div>
+    
+    <script src="static/js/jquery-2.1.4.min.js"></script>
+    <script src="static/js/prism.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/lightgallery.min.js"></script>
+    <script src="static/js/functions.js"></script>
+</body>
+
+
+</html>
