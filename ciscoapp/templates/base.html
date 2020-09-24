@@ -2,90 +2,123 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static', filename='css/material-design-color-palette.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/animate.css') }}">
-
-    <style type="text/css">
-        html {
-            overflow: scroll;
-            overflow-x: hidden;
-            }
-            ::-webkit-scrollbar {
-            width: 0px; }
-
-        </style>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="static/assets/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
+      <link href="static/assets/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
+      <link href="static/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
+      <link href="static/assets/vendors/bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+      <link href="static/assets/css/app-1.min.css" rel="stylesheet">
+      <script src="static/assets/js/page-loader.min.js"></script>      
 </head>
 
 <body>
-    <div class="overflow-hidden"></div>
-    <!-- Header -->
-    <header id="header">
-        <div class="header__logo">SPARC NOC AUTOMATION</div>
-        <div class="header__links">
-            <a href="/">Home</a>
-            <a href="">Sign in</a>
-            <a href="">Register</a>
+ <!-- Page Loader -->
+        <div id="page-loader">
+            <div class="preloader preloader--xl preloader--light">
+                <svg viewBox="25 25 50 50">
+                    <circle cx="50" cy="50" r="20" />
+                </svg>
+            </div>
         </div>
-    </header>
 
-    <!-- sidebar -->
-    <main id="main">
-        <aside id="sidebar" data-spy="affix" data-offset-top="72">
-            <ul class="sidebar__links">
-                <li>
-                    <span class="sidebar__title">Network Automation</span>
+        <!-- Header -->
+        <header id="header">
+            <div class="logo">
+                <a href="/" class="hidden-xs">
+                    SPARCK
+                    <small>NOC AUTOMATION</small>
+                </a>
+                <i class="logo__trigger zmdi zmdi-menu" data-mae-action="block-open" data-mae-target="#navigation"></i>
+            </div>
+
+            <ul class="top-menu">
+               <li><a href="" class="mx-5">Login</a></li>
+               <li><a href="" class="mx-5">Register</a></li>
+            </ul>
+
+        </header>
+
+        <section id="main">
+ 
+
+<!-- SIDE NAVIGATION -->
+            <aside id="navigation">
+                <div class="navigation__header">
+                    <i class="zmdi zmdi-long-arrow-left" data-mae-action="block-close"></i>
+                </div>
+
+                <div class="navigation__toggles">
+                    <a href="" class="active" data-mae-action="block-open" data-mae-target="#notifications" data-toggle="tab" data-target="#notifications__messages">
+                        <i class="zmdi zmdi-email"></i>
+                    </a>
+                    <a href="" data-mae-action="block-open" data-mae-target="#notifications" data-toggle="tab" data-target="#notifications__updates">
+                        <i class="zmdi zmdi-notifications"></i>
+                    </a>
+                    <a href=""  data-mae-action="block-open" data-mae-target="#notifications" data-toggle="tab" data-target="#notifications__tasks">
+                        <i class="zmdi zmdi-playlist-plus"></i>
+                    </a>
+                </div>
+
+                <div class="navigation__menu c-overflow">
                     <ul>
-                        <li><a href="#">Incapsula API</a></li>
-                        <li><a href="#"> DDOS Mitigation</a></li>
-                        <li><a href="#">Static Rerouting</a></li>
+                        <li class="navigation__active">
+                            <a href="/"><i class="zmdi zmdi-home"></i>Home</a>
+                        </li>
+                        <li><a href="#"><i class="zmdi zmdi-format-underlined"></i>Incapsula API</a></li>
+                        <li><a href="#"><i class="zmdi zmdi-delicious"></i>DDOS Mitigation</a></li>
+                        <li><a href="#"><i class="zmdi zmdi-widgets"></i>Static Re-routing</a></li>
+                        <li><a href="/dhcp"><i class="zmdi zmdi-format-underlined"></i>DHCP Template</a></li>
+                        <li><a href="#"><i class="zmdi zmdi-delicious"></i>Qos Template</a></li>
+                        <li><a href="#"><i class="zmdi zmdi-widgets"></i>Cloudware Template</a></li>        
+                        <li><a href="#"><i class="zmdi zmdi-format-underlined"></i>BGP Template</a></li>
+                        <li><a href="#"><i class="zmdi zmdi-delicious"></i>Cisco Template</a></li>
+                        <li><a href="#"><i class="zmdi zmdi-widgets"></i>Sangfor Template</a></li>                                             
                     </ul>
-                </li>
+                </div>
+            </aside>
+<!-- END OF SIDE NAVIGATION -->
 
-                <li>
-                    <span class="sidebar__title">Config Generators</span>
-                    <ul>
-                        <li><a href="dhcp">Dhcp Template</a></li>
-                        <li><a href="#">Qos Template</a></li>
-                        <li><a href="#">Cloudware Template</a></li>
-                        <li><a href="#">BGP Template</a></li>
-                        <li><a href="#">Cisco Template</a></li>
-                        <li><a href="#">Sangfor Template</a></li>
-                    </ul>
-                </li>
-    </main>
-    <!-- endof sidebar -->
-    <br>
-    <br>
-    <div class="container">
-        {% block body %}
-        {% endblock body %}
-    </div>
 
-    <div class="container">
-        <div class="col-12 col-md-3 col-sm-3">
-            {% block forms %}
-            {% endblock forms %}
-        </div>
+            <section id="content">
+               {% block content %}
+               {% endblock content %}
+            </section>
 
-        <div class="col-12 col-md-9 col-sm-9">
-            {% block result %}
-            {% endblock result %}
-        </div>
-    </div>
-    
-    <script src="static/js/jquery-2.1.4.min.js"></script>
-    <script src="static/js/prism.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
-    <script src="static/js/lightgallery.min.js"></script>
-    <script src="static/js/functions.js"></script>
+
+
+            <footer id="footer">
+                Copyright &copy; 2020 ASoltes
+                <ul class="footer__menu">
+                    <li><a href="">Home</a></li>
+                    <li><a href="">Dashboard</a></li>
+                    <li><a href="">Reports</a></li>
+                    <li><a href="">Support</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+            </footer>
+        </section>   
+
+
 </body>
-
-
+  
+   <script src="static/assets/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+   <script src="static/assets/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+   <script src="static/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+   <script src="static/assets/vendors/bower_components/remarkable-bootstrap-notify/dist/bootstrap-notify.min.js"></script>
+   <script src="static/assets/vendors/bower_components/moment/min/moment.min.js"></script>
+   <script src="static/assets/vendors/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+   <script src="static/assets/vendors/bower_components/simpleWeather/jquery.simpleWeather.min.js"></script>
+   <script src="static/assets/vendors/bower_components/salvattore/dist/salvattore.min.js"></script>
+   <script src="static/assets/vendors/bower_components/flot/jquery.flot.js"></script>
+   <script src="static/assets/vendors/bower_components/flot/jquery.flot.resize.js"></script>
+   <script src="static/assets/vendors/bower_components/flot.curvedlines/curvedLines.js"></script>
+   <script src="static/assets/vendors/jquery.sparkline/jquery.sparkline.min.js"></script>
+   <script src="static/assets/demo/js/flot-charts/curved-line.js"></script>
+   <script src="static/assets/demo/js/flot-charts/line.js"></script>
+   <script src="static/assets/demo/js/easy-pie-charts.js"></script>
+   <script src="static/assets/demo/js/misc.js"></script>
+   <script src="static/assets/demo/js/sparkline-charts.js"></script>
+   <script src="static/assets/demo/js/calendar.js"></script>
+   <script src="static/assets/js/app.min.js"></script>
 </html>

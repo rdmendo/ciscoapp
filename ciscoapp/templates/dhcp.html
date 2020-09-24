@@ -1,30 +1,44 @@
 {% extends 'base.html' %}
 
-{% block forms %}
-
-<form action="/dhcp" method="POST" >
-    {{form.hidden_tag()}}
-    <!-- <div class="form-group"> -->
-        {{form.network_address.label}}
-        {{form.network_address(class="form-control form-control-sm")}}
-        <br>
-        {{form.pool.label}}
-        {{form.pool(class="form-control form-control-sm")}}
-        <br>
-        {{form.private_ip.label}}
-        {{form.private_ip(class="form-control form-control-sm")}}
-        <br>
-        {{form.interface.label}}
-        {{form.interface(class="form-control form-control-sm")}}
-        <br>
-        {{form.submit(class="btn btn-success")}}
-        <br>
-    <!-- </div>      -->
-</form> 
-{% endblock forms %}
 
 
-{% block result %}
-<textarea class="form-control text-light" id="textarea" rows="20"
-            style=" white-space: pre-wrap; background-color:inherit !important; "> {{result}} </textarea>
-{% endblock result %}
+{% block content %}
+   <div class="card" style="padding-bottom:10px;">
+      <div class="card__header">
+         <h2>DHCP Template<small>Generate DHCP Template</small></h2>
+      </div>
+   </div>
+
+   <div id="content__grid" >   <!-- CONTENT PART -->        
+      <div class="container">
+         <div class="row">
+            <div class="col-12 col-md-3 col-sm-3">       <!-- FORM PART -->
+               <form action="/dhcp" method="POST" >
+                  {{form.hidden_tag()}}
+                     {{form.network_address.label}}
+                     {{form.network_address(class="form-control form-control-sm")}}
+                     <br>
+                     {{form.pool.label}}
+                     {{form.pool(class="form-control form-control-sm ")}}
+                     <br>
+                     {{form.private_ip.label}}
+                     {{form.private_ip(class="form-control form-control-sm ")}}
+                     <br>
+                     {{form.interface.label}}
+                     {{form.interface(class="form-control form-control-sm ")}}
+                     <br>
+                     {{form.submit(class="btn btn-success")}}
+                     <br>
+               </form> 
+            </div>
+            <div class="col-12 col-md-9 col-sm-9">       <!-- TEXT AREA PART -->
+               <textarea class="form-control text-light" id="textarea" rows="20" style="background-color:#2b3942 !important; "> 
+                     {{result}} 
+               </textarea>
+            </div>
+         </div>
+      </div>
+   </div>
+{% endblock content %}
+
+
