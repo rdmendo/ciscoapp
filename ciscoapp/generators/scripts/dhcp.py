@@ -15,7 +15,7 @@ class GenerateDhcp:
         network_host = ip_network(self.network)
         network_list = network_host.num_addresses
 
-        return "Number of Generated Pool: {}".format(network_list - 2)
+        return "{}".format(network_list - 2)
 
     def display_pool(self):
         

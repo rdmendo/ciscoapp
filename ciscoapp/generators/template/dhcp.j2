@@ -2,7 +2,7 @@
 {%- set ipaddr = x %}
 {%- set x = x|string %}
 {%- set vlan = x.split(".") %}
-{%- set vlan = vlan[-1] -%}
+{%- set vlan = vlan[-1] %}
 int {{interface}}.{{vlan}}
 encapsulation dot1q {{vlan}}
 ip address {{priv_address}}.{{vlan}}.254 255.255.255.0

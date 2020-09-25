@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+   <div class="card" style="padding-bottom:10px;">
+      <div class="card__header">
+         <h2>QOS Template<small>Generate QOS Template</small></h2>
+      </div>
+   </div>
+
+   <div id="content__grid" >   <!-- CONTENT PART -->        
+      <div class="container">
+         <div class="row">
+            <div class="col-12 col-md-3 col-sm-3">       <!-- FORM PART -->
+               <form action="/qos" method="POST" >
+                  {{form.hidden_tag()}}
+                     {{form.policy_name.label}}
+                     {{form.policy_name(class="form-control form-control-sm")}}
+                     <br>
+                     {{form.bandwidth.label}}
+                     {{form.bandwidth(class="form-control form-control-sm ")}}
+                     <br>
+                     {{form.device.label}}
+                     {{form.device(class="form-control form-control-sm ")}}
+                     <br>
+                     {{form.interface.label}}
+                     {{form.interface(class="form-control form-control-sm ")}}
+                     <br>
+                     {{form.submit(class="btn btn--light")}}
+                     <br>
+               </form> 
+            </div>
+            <div class="col-12 col-md-9 col-sm-9">       <!-- TEXT AREA PART -->
+               <textarea class="form-control text-light" id="textarea" rows="20" style="background-color:#2b3942 !important;" spellcheck="false"> 
+                     {{result}} 
+               </textarea>
+            </div>
+         </div>
+      </div>
+   </div>
+{% endblock content %}
+
+

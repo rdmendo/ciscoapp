@@ -1,14 +1,23 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField
 from wtforms.validators import InputRequired, DataRequired, Length, Email, EqualTo, IPAddress
 
 
 choice_priv = open('ciscoapp/text_data/private.txt').read().splitlines()
 choice_int = open('ciscoapp/text_data/interface.txt').read().splitlines()
+choice_dev = open('ciscoapp/text_data/device.txt').read().splitlines()
+choice_int_qos = open('ciscoapp/text_data/interface_qos.txt').read().splitlines()
 
 class DhcpForm(FlaskForm):
     network_address = StringField("IPV4 Address", validators= [DataRequired(), IPAddress()])
     pool =  StringField('DHCP Pool',validators=[DataRequired(), Length(min=2, max=20)])
     private_ip = SelectField('Private IP',choices=choice_priv, validators=[DataRequired()])
     interface = SelectField('Interface', choices=choice_int, validators=[DataRequired()])
+    submit = SubmitField('Generate')
+    
+class QOSForm(FlaskForm):
+    policy_name =  StringField('Policy Name',validators=[DataRequired(), Length(min=2, max=20)])
+    bandwidth = IntegerField('Bandwidth', validators=[DataRequired()])
+    device = SelectField('Device Type',choices=choice_dev, validators=[DataRequired()])
+    interface = SelectField('Interface', choices=choice_int_qos, validators=[DataRequired()])
     submit = SubmitField('Generate')

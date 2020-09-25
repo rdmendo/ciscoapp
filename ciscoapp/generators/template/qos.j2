@@ -1,0 +1,32 @@
+{% if device == 'Router' %}
+! Router QOS Configurations
+!
+conf t
+class-map match-all O{{policy_name}}_limit
+match any
+exit
+!
+policy-map {{policy_name}}_limit
+police {{bandwidth}}000000 conform-action transmit exceed-action drop
+!
+interface {{interface}}
+service-policy input {{policy_name}}_limit
+service-policy output {{policy_name}}_limit
+!!!!
+
+{% elif device == 'Switch' %}
+! Switch QOS Configurations
+!
+conf t
+class-map match-any O{{policy_name}}_class
+match any
+!
+policy-map O{{policy_name}}_limit
+class O{{policy_name}}_class
+police {{bandwidth}}000000 conform-action transmit exceed-action drop
+!
+interface {{interface}}
+service-policy input {{policy_name}}_limit
+service-policy output {{policy_name}}_limit
+!!!!
+{% endif %}

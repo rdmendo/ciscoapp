@@ -9,7 +9,8 @@
       <link href="static/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
       <link href="static/assets/vendors/bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
       <link href="static/assets/css/app-1.min.css" rel="stylesheet">
-      <script src="static/assets/js/page-loader.min.js"></script>      
+      <script src="static/assets/js/page-loader.min.js"></script>
+      <style type="text/css">html {overflow: scroll; overflow-x: hidden; }::-webkit-scrollbar {width: 0px; }</style>
 </head>
 
 <body>
@@ -26,16 +27,16 @@
         <header id="header">
             <div class="logo">
                 <a href="/" class="hidden-xs">
-                    SPARCK
+                    SPARC
                     <small>NOC AUTOMATION</small>
                 </a>
                 <i class="logo__trigger zmdi zmdi-menu" data-mae-action="block-open" data-mae-target="#navigation"></i>
             </div>
 
-            <ul class="top-menu">
+            <!-- <ul class="top-menu">
                <li><a href="" class="mx-5">Login</a></li>
                <li><a href="" class="mx-5">Register</a></li>
-            </ul>
+            </ul> -->
 
         </header>
 
@@ -67,17 +68,38 @@
                         </li>
                         <li><a href="#"><i class="zmdi zmdi-format-underlined"></i>Incapsula API</a></li>
                         <li><a href="#"><i class="zmdi zmdi-delicious"></i>DDOS Mitigation</a></li>
-                        <li><a href="#"><i class="zmdi zmdi-widgets"></i>Static Re-routing</a></li>
-                        <li><a href="/dhcp"><i class="zmdi zmdi-format-underlined"></i>DHCP Template</a></li>
-                        <li><a href="#"><i class="zmdi zmdi-delicious"></i>Qos Template</a></li>
-                        <li><a href="#"><i class="zmdi zmdi-widgets"></i>Cloudware Template</a></li>        
-                        <li><a href="#"><i class="zmdi zmdi-format-underlined"></i>BGP Template</a></li>
-                        <li><a href="#"><i class="zmdi zmdi-delicious"></i>Cisco Template</a></li>
-                        <li><a href="#"><i class="zmdi zmdi-widgets"></i>Sangfor Template</a></li>                                             
+                        <li><a href="#"><i class="zmdi zmdi-arrow-merge"></i>Static Re-routing</a></li>
+                        
+                        <li class="navigation__sub">
+                        <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-widgets"></i>Templates</a>
+                        <ul>
+                            <li><a href="/dhcp"></i>DHCP</a></li>
+                            <li><a href="/qos">Qos</a></li>
+                            <li><a href="#">Cloudware</a></li>        
+                            <li><a href="#">BGP</a></li>
+                            <li><a href="#">Cisco</a></li>
+                            <li><a href="#">Sangfor</a></li>    
+                        </ul>
+                        </li>               
                     </ul>
                 </div>
             </aside>
 <!-- END OF SIDE NAVIGATION -->
+
+        <!-- Flash Message -->
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- End of Flash Message -->
 
 
             <section id="content">
@@ -88,9 +110,9 @@
 
 
             <footer id="footer">
-                Copyright &copy; 2020 ASoltes
+                Copyright &copy; 2020 asoltes
                 <ul class="footer__menu">
-                    <li><a href="">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="">Dashboard</a></li>
                     <li><a href="">Reports</a></li>
                     <li><a href="">Support</a></li>
