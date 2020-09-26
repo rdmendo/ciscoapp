@@ -50,11 +50,11 @@ def new():
 def additional():
     form = AddForm()
     
-    if form.is_submitted():
+    if form.validate_on_submit():
         user_add = GenerateAdditional()
         result = user_add.create_additional(form.new_link.data, form.existing_link.data)
         
-        flash(f"New {form.new_link.data} config has been created.", 'success')
+        flash(f"New IP Address {form.new_link.data} config has been created and will be routed back to existing link {form.existing_link.data}.", 'success')
         return render_template('additional.html', form=form, result=result)
     
     return render_template('additional.html', form=form)
