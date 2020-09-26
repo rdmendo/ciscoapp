@@ -3,33 +3,21 @@ from jinja2 import Environment, FileSystemLoader
 import yaml
 
 class GenerateDhcp:
-    def __init__(self, network, poolname, interface, private_addr):
-        super().__init__()
 
-        self.network = network
-        self.poolname = poolname
-        self.interface = interface
-        self.private_addr = private_addr
-
-    def count_pool(self):
-        network_host = ip_network(self.network)
+    def count_pool(self, network):
+        network_host = ip_network(network)
         network_list = network_host.num_addresses
 
         return "{}".format(network_list - 2)
 
-    def display_pool(self):
-        
-        return "Network Address: {} | Poolname: {} | Interface: {} | Private Address: {} ".format(self.network, str(self.poolname).upper(), self.interface, self.private_addr)
 
-
-    def create_pool(self):
-        ipnetaddr = ip_network(self.network)
+    def create_pool(self, network, poolname, interface, private_addr):
+        ipnetaddr = ip_network(network)
         net_add = ipnetaddr.network_address
         net_mask = ipnetaddr.netmask
-        poolname = str(self.poolname).upper()
+        poolname = str(poolname).upper()
 
-
-        priv = str(self.private_addr)
+        priv = str(private_addr)
         priv_split = priv.split('.')
         priv_addr = f"{priv_split[0]}.{priv_split[1]}"
 
@@ -43,7 +31,7 @@ class GenerateDhcp:
                 mask=net_mask,
                 poolname = poolname,
                 priv_address = priv_addr,
-                interface = self.interface,)
+                interface = interface,)
         
         return from_template
     

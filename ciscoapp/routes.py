@@ -1,9 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 from ciscoapp import app
-from ciscoapp.forms import DhcpForm, QOSForm
-from ciscoapp.generators.scripts.dhcp import GenerateDhcp
-from ciscoapp.generators.scripts.qos import GenerateQos
-
+from ciscoapp.forms import DhcpForm, QOSForm, NewForm, AddForm
+from ciscoapp.generators.scripts.configenerate import GenerateDhcp , GenerateQos, GenerateCloudware, GenerateAdditional
 
 @app.route("/",  methods=['GET', 'POST'])
 def index():
@@ -14,9 +12,9 @@ def dhcp():
     form = DhcpForm()
     
     if form.is_submitted():
-        user_dhcp = GenerateDhcp(form.network_address.data, form.pool.data,form.interface.data, form.private_ip.data)
-        result = user_dhcp.create_pool()
-        poolcount = user_dhcp.count_pool()
+        user_dhcp = GenerateDhcp()
+        result = user_dhcp.create_pool(form.network_address.data, form.pool.data,form.interface.data, form.private_ip.data)
+        poolcount = user_dhcp.count_pool(form.network_address.data)
         flash(f"{poolcount} dhcp pool has been created with network  {form.network_address.data} for {form.pool.data.upper()} office.", 'success')
         
         return render_template('dhcp.html',form=form, result=result )
@@ -27,9 +25,36 @@ def qos():
     form = QOSForm()
     
     if form.validate_on_submit():
-        user_qos = GenerateQos(form.policy_name.data.upper(), form.bandwidth.data, form.interface.data, form.device.data)
-        result = user_qos.create_qos()
+        user_qos = GenerateQos()
+        result = user_qos.create_qos(form.policy_name.data.upper(), form.bandwidth.data, form.interface.data, form.device.data)
         flash(f"QOS Policy has been created for {form.policy_name.data.upper()} {form.bandwidth.data} MBPS", 'success')
         
         return render_template('qos.html', form=form, result=result)
     return render_template('qos.html', form=form)
+
+
+@app.route("/new", methods=['GET', 'POST'])
+def new():
+    form = NewForm()
+    
+    if form.is_submitted():
+        user_new = GenerateCloudware()
+        result = user_new.create_office(form.name.data.upper(), form.level.data, form.inet.data, form.network.data, form.interface.data, form.bandwidth.data, form.implementation_type.data)
+        flash(f"New {form.implementation_type.data} config has been created at {form.level.data} for {form.name.data.upper()} office", 'success')
+    
+        return render_template('new.html', form=form, result=result)
+    return render_template('new.html', form=form)
+
+
+@app.route("/additional", methods=['GET', 'POST'])
+def additional():
+    form = AddForm()
+    
+    if form.is_submitted():
+        user_add = GenerateAdditional()
+        result = user_add.create_additional(form.new_link.data, form.existing_link.data)
+        
+        flash(f"New {form.new_link.data} config has been created.", 'success')
+        return render_template('additional.html', form=form, result=result)
+    
+    return render_template('additional.html', form=form)

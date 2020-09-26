@@ -1,0 +1,81 @@
+
+!Generated {{implementation_type}} Configurations - Andres Bukid
+!
+{%- if implementation_type == 'Cloudware' %}
+!!!! Core Router: (SPARC-MDF3-R02) !!!!
+conf t
+object-group network CW_{{name}}
+{{network.network_address}} {{network.netmask}}
+exit
+!
+object-group network ONET
+group-object CW_{{name}}
+{%- elif implementation_type == 'Cisco' %}
+!!!! Core Routers: (SPARC-MDF2-CR01 | SPARC-MDF3-R02) !!!!
+conf t
+router bgp 18190
+network {{network.network_address}} {{network.netmask}}
+exit
+{%- elif implementation_type == 'Sangfor' %}
+!!!! Core Routers: (SPARC-MDF2-CR01 | SPARC-MDF3-R02) !!!!
+conf t
+router bgp 18190
+network {{network.network_address}} {{network.netmask}}
+exit
+{% endif %}
+------------------------------------------------------------------------------------------------------------------------------------------------
+!!!!  Core Switch: (SPARC-CORE-SW01) !!!!
+conf t
+vlan {{inet}}
+name inet_{{name}}
+!
+int vlan {{inet}}
+ip address {{network.network_address + 1}} {{network.netmask}}
+description office_{{name}}
+exit
+!
+{%- if level == 'Level 1' %}
+int Te1/2/1
+switchport trunk allowed vlan add {{inet}}
+{%- elif level == 'Level 2' %}
+int Te1/2/2
+switchport trunk allowed vlan add {{inet}}
+{%- elif level == 'Level 3' %}
+int Te2/2/3
+switchport trunk allowed vlan add {{inet}}
+{%- elif level == 'Level 4' %}
+int Te2/2/4
+switchport trunk allowed vlan add {{inet}}
+{%- elif level == 'Level 5' %}
+int Te2/2/5
+switchport trunk allowed vlan add {{inet}}
+{%- endif %}
+!
+------------------------------------------------------------------------------------------------------------------------------------------------
+!!!! MDF - (SPARC-MDF-{{level}}) !!!!
+conf t
+vlan {{inet}}
+name inet_{{name}}
+!
+------------------------------------------------------------------------------------------------------------------------------------------------
+!!!! IDF - (SPARC-IDF-{{level}}) !!!!
+conf t
+vlan {{inet}}
+name inet_{{name}}
+!
+ip access-list extended {{name}}_ACL
+permit ip any any
+!
+class-map {{name}}_class
+match access-group name {{name}}_ACL
+!
+policy-map {{name}}_limit
+class {{name}}_class
+police {{bandwidth}}000000 conform-action transmit exceed-action drop
+!
+int {{interface}}
+switchport access vlan {{inet}}
+service-policy input {{name}}_limit
+service-policy output {{name}}_limit 
+no shut
+!

@@ -1,0 +1,8 @@
+
+Core Routers: (SPARC-MDF2-CR01 | SPARC-MDF3-R02)
+!
+router bgp 18190
+ network {{new_network.network_address}} mask {{new_network.netmask}}
+!
+Core SW:
+ip route {{new_network.network_address}} {{new_network.netmask}} {{existing_link}}

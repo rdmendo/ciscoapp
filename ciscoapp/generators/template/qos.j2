@@ -18,15 +18,18 @@ service-policy output {{policy_name}}_limit
 ! Switch QOS Configurations
 !
 conf t
+ip access-list extended O{{policy_name}}_ACL
+permit ip any any
+!
 class-map match-any O{{policy_name}}_class
-match any
+match access-group name O{{policy_name}}_ACL
 !
 policy-map O{{policy_name}}_limit
 class O{{policy_name}}_class
 police {{bandwidth}}000000 conform-action transmit exceed-action drop
 !
 interface {{interface}}
-service-policy input {{policy_name}}_limit
-service-policy output {{policy_name}}_limit
+service-policy input O{{policy_name}}_limit
+service-policy output O{{policy_name}}_limit
 !!!!
 {% endif %}
