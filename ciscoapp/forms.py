@@ -35,6 +35,6 @@ class NewForm(FlaskForm):
     submit = SubmitField('Generate')
     
 class AddForm(FlaskForm):
-    existing_link =  StringField("Existing Link", validators= [DataRequired(), IPAddress()])
+    existing_link =  StringField("Existing Uplink", validators= [DataRequired(), IPAddress()])
     new_link = StringField("New IP Address", validators= [DataRequired()])
     submit = SubmitField('Generate')
