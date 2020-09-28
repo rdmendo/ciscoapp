@@ -9,6 +9,8 @@ choice_dev = open('ciscoapp/text_data/device.txt').read().splitlines()
 choice_int_qos = open('ciscoapp/text_data/interface_qos.txt').read().splitlines()
 choice_level = open('ciscoapp/text_data/level.txt').read().splitlines()
 choice_implem = open('ciscoapp/text_data/implementation.txt').read().splitlines()
+choice_task =  open('ciscoapp/text_data/divert_task.txt').read().splitlines()
+choice_allowed_ip = open('ciscoapp/text_data/allowed_network.txt').read().splitlines()
 
 class DhcpForm(FlaskForm):
     network_address = StringField("IPV4 Address", validators= [DataRequired(), IPAddress()])
@@ -38,3 +40,9 @@ class AddForm(FlaskForm):
     existing_link =  StringField("Existing Uplink", validators= [DataRequired(), IPAddress()])
     new_link = StringField("New IP Address", validators= [DataRequired()])
     submit = SubmitField('Generate')
+    
+class DivertForm(FlaskForm):
+    # network =  StringField("Network", validators= [DataRequired(), IPAddress()])
+    network = SelectField('Network', choices=choice_allowed_ip, validators=[DataRequired()])
+    task =  SelectField('Task',choices=choice_task, validators=[DataRequired()])
+    submit = SubmitField('Mitigate')

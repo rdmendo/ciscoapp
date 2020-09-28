@@ -1,7 +1,10 @@
-from flask import render_template, url_for, flash, redirect, Response
+from flask import render_template, url_for, flash, redirect, Response, session
 from ciscoapp import app
-from ciscoapp.forms import DhcpForm, QOSForm, NewForm, AddForm
+from ciscoapp.forms import DhcpForm, QOSForm, NewForm, AddForm, DivertForm
 from ciscoapp.generators.scripts.configenerate import GenerateDhcp , GenerateQos, GenerateCloudware, GenerateAdditional
+from ciscoapp.generators.scripts.divert import Divert
+from ciscoapp import app, db
+from ciscoapp.models import AdvertisedNetwork
 from datetime import datetime
 
 @app.route("/",  methods=['GET', 'POST'])
@@ -57,3 +60,32 @@ def additional():
         flash(f"New IP Address {form.new_link.data} config has been created and will be routed back to existing link {form.existing_link.data}.", 'success')
         return render_template('additional.html', form=form, result=result)
     return render_template('additional.html',title="Additional IP", form=form)
+
+@app.route("/divert", methods=['GET', 'POST'])
+def divert():
+    form = DivertForm()
+    network_prefix = AdvertisedNetwork.query.all()
+
+    
+    if form.validate_on_submit():
+        user_divert = Divert(form.network.data, form.task.data)
+        result = user_divert.nr.run(task=user_divert.advertise_to_incapsula)
+        user_divert.nr.close_connections()
+        
+        hosts = user_divert.nr.inventory.hosts
+        failed_host = result.failed_hosts.keys()
+        
+        new = AdvertisedNetwork(prefix=form.network.data)
+        db.session.add(new)
+        db.session.commit()
+        network_prefix = AdvertisedNetwork.query.all()
+
+        for x in hosts:
+            if x in failed_host:
+                flash(f"Unsuccessful task in {x}", 'danger')
+            else:
+                flash(f"Successful task in {x}", 'success')
+    
+        return render_template('divert.html', form=form, result=result, network=network_prefix)
+    return render_template('divert.html', title="DDOS", form=form, network=network_prefix)
+        

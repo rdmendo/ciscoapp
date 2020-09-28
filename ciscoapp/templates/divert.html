@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <div class="card" style="padding-bottom:10px;">
+      <div class="card__header">
+         <h2>Divert to Incapsula<small>Mitigate DDOS Attacks</small></h2>
+      </div>
+   </div>
+
+   <div id="content__grid" >   <!-- CONTENT PART -->        
+      <div class="container">
+         <div class="row">
+            <div class="col-12 col-md-3 col-sm-3">       <!-- FORM PART -->
+               <form action="/divert" method="POST" >
+                  {{form.hidden_tag()}}
+                     {{form.network.label}}
+                     {{form.network(class="form-control form-control-sm")}}
+                     <br>
+                     {{form.task.label}}
+                     {{form.task(class="form-control form-control-sm ")}}
+                     <br>
+                     {{form.submit(class="btn btn--light")}}
+                     <br>
+               </form> 
+            </div>
+            <div class="col-12 col-md-9 col-sm-9">       <!-- TEXT AREA PART -->
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Network Prefix</th>
+                            <th>Date</th>
+                        <tr>
+                    </thead>
+                    <tbody>
+                        {% for x in network %}
+                        <tr>
+                            <td>{{ x.prefix }}</td>
+                            <td>{{ x.date_posted }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+         </div>
+      </div>
+   </div>
+{% endblock content %}
+
+
