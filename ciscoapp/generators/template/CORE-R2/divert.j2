@@ -4,7 +4,7 @@ neighbor 172.17.32.165 distribute-list DIVERT_ALL_INCAPSULA out
 neighbor 172.17.160.13 distribute-list DIVERT_ALL_INCAPSULA out
 neighbor 120.89.30.28 distribute-list DIVERT_ALL_ISP out
 do clear ip bgp * soft out
-{% elif mitigate =='Remove Divert All' %}
+{% elif mitigate =='No Divert All' %}
 router bgp 18190
 neighbor 172.17.32.165 distribute-list DIVERT out
 neighbor 172.17.160.13 distribute-list DIVERT out

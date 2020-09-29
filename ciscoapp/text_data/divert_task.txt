@@ -1,4 +1,4 @@
 Divert
 No Divert
 Divert All
-Remove Divert All
+No Divert All

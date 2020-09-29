@@ -9,7 +9,9 @@ from datetime import datetime
 
 @app.route("/",  methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    get_network = reversed(AdvertisedNetwork.query.order_by(AdvertisedNetwork.id).all()[-10:])
+
+    return render_template('index.html', network=get_network)
     
 @app.route("/dhcp", methods=['GET', 'POST'])
 def dhcp():
@@ -64,28 +66,37 @@ def additional():
 @app.route("/divert", methods=['GET', 'POST'])
 def divert():
     form = DivertForm()
-    network_prefix = AdvertisedNetwork.query.all()
+    # get_network = AdvertisedNetwork.query.all()
+    get_network = reversed(AdvertisedNetwork.query.order_by(AdvertisedNetwork.id).all()[-10:])
 
-    
     if form.validate_on_submit():
+        #connections to devices
         user_divert = Divert(form.network.data, form.task.data)
         result = user_divert.nr.run(task=user_divert.advertise_to_incapsula)
         user_divert.nr.close_connections()
+
+        # add form datas to db
+        if form.task.data == 'Divert All' or form.task.data == 'No Divert All':
+            new = AdvertisedNetwork(prefix="113.61.42 - 58.0/24", task=form.task.data)
+            db.session.add(new)
+            db.session.commit()
+        else:
+            new = AdvertisedNetwork(prefix=form.network.data, task=form.task.data)
+            db.session.add(new)
+            db.session.commit()
         
+        #variables for flash messages
         hosts = user_divert.nr.inventory.hosts
         failed_host = result.failed_hosts.keys()
-        
-        new = AdvertisedNetwork(prefix=form.network.data)
-        db.session.add(new)
-        db.session.commit()
-        network_prefix = AdvertisedNetwork.query.all()
-
         for x in hosts:
             if x in failed_host:
                 flash(f"Unsuccessful task in {x}", 'danger')
             else:
                 flash(f"Successful task in {x}", 'success')
     
-        return render_template('divert.html', form=form, result=result, network=network_prefix)
-    return render_template('divert.html', title="DDOS", form=form, network=network_prefix)
+        return redirect(url_for('divert', form=form, result=result))
+    return render_template('divert.html', title="DDOS", form=form, network=get_network)
+
+    
+    
         

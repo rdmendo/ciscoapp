@@ -32,7 +32,9 @@ class Divert:
         task.run(task=netmiko_send_config,
         name="Pushing ACL Commands",
         config_commands=acl_output)
+        
+    def clear_bgp(self, task):
+        task.run(netmiko_send_command, command_string="clear ip bgp * soft out")
 
-    
         
         

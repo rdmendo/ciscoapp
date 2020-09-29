@@ -46,3 +46,4 @@ class DivertForm(FlaskForm):
     network = SelectField('Network', choices=choice_allowed_ip, validators=[DataRequired()])
     task =  SelectField('Task',choices=choice_task, validators=[DataRequired()])
     submit = SubmitField('Mitigate')
+    

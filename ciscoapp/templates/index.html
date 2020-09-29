@@ -6,9 +6,9 @@
    <div class="card__header">
       <h1>Hello, Network Engineers!</h1>
       <p class="lead">This is a simple config generators and network automation.</p>
-      <p>It uses python3, nornir and other python modules.</p>
+      <!-- <p>It uses python3, nornir and other python modules.</p> -->
       <p class="lead">
-         <a class="btn btn-primary btn-lg" href="#!" role="button">Automate</a>
+         <a class="btn btn-primary btn-lg" href="/divert" role="button">Mitigate DDOS Attack</a>
       </p>
    </div>
 
@@ -17,6 +17,26 @@
       <!-- CONTENT PART -->
       <div class="container">
          <div class="row">
+            
+            <table class="table table-striped" data-ajax="true">
+               <!-- <table id="data-table-basic"> -->
+                 <thead>
+                     <tr>
+                         <th>Network Prefix</th>
+                         <th>Task</th>
+                         <th>Date</th>
+                     <tr>
+                 </thead>
+                 <tbody>
+                     {% for x in network %}
+                     <tr>
+                         <td>{{ x.prefix }}</td>
+                         <td>{{ x.task}} </td>
+                         <td>{{ x.date_posted.strftime('%A, %B %e, %Y - %I:%M:%S %p') }}</td>
+                     </tr>
+                     {% endfor %}
+                 </tbody>
+             </table>
 
             <!-- PUT CONTENT HERE -->
 
