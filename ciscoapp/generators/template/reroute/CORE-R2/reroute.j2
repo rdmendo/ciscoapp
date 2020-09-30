@@ -1,0 +1,24 @@
+{% if reroute_to == 'ETPI' %}
+{# add route to etpi #}
+ip route {{ipaddress}} 255.255.255.255 180.232.122.13
+{# remove static route to core-r1 #}
+no ip route {{ipaddress}} 255.255.255.255 192.168.1.9
+
+{% elif reroute_to =='GLOBE' %}
+{# add route to core-r1 #}
+ip route {{ipaddress}} 255.255.255.255 192.168.1.9
+{# remove route to etpi #}
+no ip route {{ipaddress}} 255.255.255.255 180.232.122.13
+
+{% elif reroute_to =='CONVERGE' %}
+{# add route to core-r1 #}
+ip route {{ipaddress}} 255.255.255.255 192.168.1.9
+{# remove route to etpi #}
+no ip route {{ipaddress}} 255.255.255.255 180.232.122.13
+
+{% endif %}
+
+
+
+
+

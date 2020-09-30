@@ -11,6 +11,7 @@ choice_level = open('ciscoapp/text_data/level.txt').read().splitlines()
 choice_implem = open('ciscoapp/text_data/implementation.txt').read().splitlines()
 choice_task =  open('ciscoapp/text_data/divert_task.txt').read().splitlines()
 choice_allowed_ip = open('ciscoapp/text_data/allowed_network.txt').read().splitlines()
+choice_isp = open('ciscoapp/text_data/isp.txt').read().splitlines()
 
 class DhcpForm(FlaskForm):
     network_address = StringField("IPV4 Address", validators= [DataRequired(), IPAddress()])
@@ -46,4 +47,17 @@ class DivertForm(FlaskForm):
     network = SelectField('Network', choices=choice_allowed_ip, validators=[DataRequired()])
     task =  SelectField('Task',choices=choice_task, validators=[DataRequired()])
     submit = SubmitField('Mitigate')
+    
+class RerouteForm(FlaskForm):
+    ipaddress = StringField("Website IP", validators= [DataRequired(), IPAddress()])
+    isp =  SelectField('Route to',choices=choice_isp, validators=[DataRequired()])
+    submit = SubmitField('Reroute')
+    
+class LoginForm(FlaskForm):
+    username = StringField("Username", validators= [DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField('Login')
+    
+    
+    
     

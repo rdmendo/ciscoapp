@@ -39,10 +39,16 @@
                 <i class="logo__trigger zmdi zmdi-menu" data-mae-action="block-open" data-mae-target="#navigation"></i>
             </div>
 
-            <!-- <ul class="top-menu">
-               <li><a href="" class="mx-5">Login</a></li>
-               <li><a href="" class="mx-5">Register</a></li>
-            </ul> -->
+            <ul class="top-menu">
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('account') }}" class="mx-5">Account</a></li>
+                    <li><a href="{{ url_for('logout') }}" class="mx-5">Logout</a></li>
+                {% else %}
+                    <li><a href="" class="mx-5">Login</a></li>
+                    <li><a href="" class="mx-5">Register</a></li>
+
+                {% endif %}
+            </ul>
 
         </header>
 
@@ -72,9 +78,9 @@
                         <li class="navigation__active">
                             <a href="/"><i class="zmdi zmdi-home"></i>Home</a>
                         </li>
-                        <li><a href="#"><i class="zmdi zmdi-format-underlined"></i>Incapsula API</a></li>
-                        <li><a href="/divert"><i class="zmdi zmdi-router"></i>DDOS Mitigation</a></li>
-                        <li><a href="#"><i class="zmdi zmdi-arrow-merge"></i>Static Re-routing</a></li>
+                        <!-- <li><a href="#"><i class="zmdi zmdi-format-underlined"></i>Incapsula API</a></li> -->
+                        <li><a href="/divert"><i class="zmdi zmdi-network-alert"></i>DDOS Mitigation</a></li>
+                        <li><a href="/reroute"><i class="zmdi zmdi-arrow-split"></i>Reroute Chinese Website</a></li>
                         
                         <li class="navigation__sub">
                         <a href="" data-mae-action="submenu-toggle"><i class="zmdi zmdi-widgets"></i>Templates</a>

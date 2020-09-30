@@ -6,36 +6,32 @@ from nornir.plugins.tasks.text import template_file
 from ipaddress import ip_network
 import os
 
-class Divert:
+class ISPReroute:
     
     os.environ["NET_TEXTFSM"] = "ntc-templates"
-    nr = InitNornir(config_file="ciscoapp/generators/scripts/config.yml")
-
-    def __init__(self, mitigate_address, action_to_be_done):
+    nr = InitNornir(config_file="/root/ciscoapp/ciscoapp/generators/scripts/config.yml")
+    
+    def __init__(self, ipaddress, to_isp):
         super().__init__()
 
-        self.mitigate_address = mitigate_address
-        self.action_to_be_done = action_to_be_done
-
-    def advertise_to_incapsula(self, task):
+        self.ipaddress = ipaddress
+        self.to_isp = to_isp
+        
+    def reroute(self, task):
         acl_template = task.run(task=template_file,
-        name="Buildling ACL Configuration",
-        net= ip_network(self.mitigate_address),
-        mitigate=self.action_to_be_done,
-        template="divert.j2", 
-        path=f"ciscoapp/generators/template/divert/{task.host}")
+        name="Buildling Static Configuration",
+        ipaddress = self.ipaddress,
+        reroute_to=self.to_isp,
+        template="reroute.j2", 
+        path=f"/root/ciscoapp/ciscoapp/generators/template/reroute/{task.host}")
 
         task.host["acl"] = acl_template.result
         acl_output = task.host["acl"]
         # acl_send = acl_output.splitlines()
 
         task.run(task=netmiko_send_config,
-        name="Pushing ACL Commands",
+        name="Pushing Static Commands",
         config_commands=acl_output)
+        
+        print (acl_output)
     
-    def clear_bgp(self, task):
-        task.run(netmiko_send_command, command_string="clear ip bgp * soft out")
-        
-
-        
-        

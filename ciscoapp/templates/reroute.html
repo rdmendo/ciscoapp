@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+   <div class="card" style="padding-bottom:10px;">
+      <div class="card__header">
+         <h2>Reroute Chinese websites<small>Force the website outgoing traffic to specific</small></h2>
+      </div>
+   </div>
+
+   <div id="content__grid" >   <!-- CONTENT PART -->        
+      <div class="container">
+         <div class="row">
+            <div class="col-12 col-md-3 col-sm-3">       <!-- FORM PART -->
+               <form action="/reroute" method="POST" >
+                  {{form.hidden_tag()}}
+                     {{form.ipaddress.label}}
+                     {{form.ipaddress(class="form-control form-control-sm")}}
+                     <br>
+                     {{form.isp.label}}
+                     {{form.isp(class="form-control form-control-sm")}}
+                     <br>
+                     {{form.submit(class="btn btn--light")}}
+                     <br>
+               </form> 
+            </div>
+            <div class="col-12 col-md-9 col-sm-9">       <!-- TEXT AREA PART -->
+                <table class="table table-striped" data-ajax="true">
+                    <!-- <table id="data-table-basic"> -->
+                      <thead>
+                          <tr>
+                              <th>IP Address</th>
+                              <th>Routed To - Internet Provider </th>
+                              <th>Date Added</th>
+                          <tr>
+                      </thead>
+                      <tbody>
+                          {% for x in routes %}
+                          <tr>
+                              <td>{{ x.ipaddress }}</td>
+                              <td>{{ x.isp}} </td>
+                              <td>{{ x.date_posted.strftime('%A, %B %e, %Y - %I:%M:%S %p') }}</td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+             </div>
+         </div>
+      </div>
+   </div>
+{% endblock content %}
+
+

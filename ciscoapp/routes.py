@@ -1,19 +1,49 @@
-from flask import render_template, url_for, flash, redirect, Response, session
-from ciscoapp import app
-from ciscoapp.forms import DhcpForm, QOSForm, NewForm, AddForm, DivertForm
+from flask import render_template, url_for, flash, redirect, Response, session, request
+from ciscoapp import app, db, bcrypt
+from ciscoapp.forms import DhcpForm, QOSForm, NewForm, AddForm, DivertForm, RerouteForm, LoginForm
 from ciscoapp.generators.scripts.configenerate import GenerateDhcp , GenerateQos, GenerateCloudware, GenerateAdditional
 from ciscoapp.generators.scripts.divert import Divert
-from ciscoapp import app, db
-from ciscoapp.models import AdvertisedNetwork
+from ciscoapp.generators.scripts.reroute import ISPReroute
+from ciscoapp.models import AdvertisedNetwork, Reroute, User
 from datetime import datetime
+from nornir.plugins.functions.text import print_result
+from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/",  methods=['GET', 'POST'])
+@login_required
 def index():
     get_network = reversed(AdvertisedNetwork.query.order_by(AdvertisedNetwork.id).all()[-10:])
-
     return render_template('index.html', network=get_network)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user)
+            next_page = request.args.get('next')
+            return  redirect (next_page) if next_page else redirect(url_for('index'))
+        else:
+            flash('Login Unsuccessful. Please check username and password', 'danger')
+    return render_template('login.html', title='Login', form=form)
+
+@app.route("/logout", methods=['GET', 'POST'])
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+@app.route("/account")
+@login_required
+def account():
+    return render_template('account.html', title='Account')
+
     
 @app.route("/dhcp", methods=['GET', 'POST'])
+@login_required
 def dhcp():
     form = DhcpForm()
     if form.is_submitted():
@@ -26,6 +56,7 @@ def dhcp():
     return render_template('dhcp.html',title="Dhcp", form=form)
 
 @app.route("/qos", methods=['GET', 'POST'])
+@login_required
 def qos():
     form = QOSForm()
     
@@ -39,6 +70,7 @@ def qos():
 
 
 @app.route("/new", methods=['GET', 'POST'])
+@login_required
 def new():
     form = NewForm()
     
@@ -52,6 +84,7 @@ def new():
 
 
 @app.route("/additional", methods=['GET', 'POST'])
+@login_required
 def additional():
     form = AddForm()
     
@@ -64,6 +97,7 @@ def additional():
     return render_template('additional.html',title="Additional IP", form=form)
 
 @app.route("/divert", methods=['GET', 'POST'])
+@login_required
 def divert():
     form = DivertForm()
     # get_network = AdvertisedNetwork.query.all()
@@ -97,6 +131,31 @@ def divert():
         return redirect(url_for('divert', form=form, result=result))
     return render_template('divert.html', title="DDOS", form=form, network=get_network)
 
+@app.route("/reroute", methods=['GET', 'POST'])
+@login_required
+def reroute():
+    form = RerouteForm()
+    get_reroute = reversed(Reroute.query.order_by(Reroute.id).all()[-10:])
+
+    if form.validate_on_submit():
+        user_reroute = ISPReroute(form.ipaddress.data, form.isp.data)
+        result = user_reroute.nr.run(task=user_reroute.reroute)
+        flash(f"{form.ipaddress.data} has been routed to {form.isp.data} ", 'success')
+
+        # print_result(result)
+    # add to database tables
+        new_route = Reroute(ipaddress=form.ipaddress.data, isp=form.isp.data)
+        db.session.add(new_route)
+        db.session.commit()
+        
+        return redirect(url_for('reroute', form=form))
+    return render_template('reroute.html', title="Reroute", form=form, routes=get_reroute)
+
+
     
+    
+    
+
+
     
         

@@ -1,0 +1,22 @@
+{% if reroute_to =='ETPI' %}
+{# remove route to globe and converge #}
+no ip route {{ipaddress}} 255.255.255.255 203.177.110.117
+no ip route {{ipaddress}} 255.255.255.255 121.58.215.185
+
+{% elif reroute_to =='GLOBE' %}
+{# add route to globe #}
+ip route {{ipaddress}} 255.255.255.255 203.177.110.117
+{# remove route to converge #}
+no ip route {{ipaddress}} 255.255.255.255 121.58.215.185
+{# remove route to etpi #}
+no ip route {{ipaddress}} 255.255.255.255 180.232.122.13
+
+{% elif reroute_to =='CONVERGE' %}
+{# add route to converge #}
+ip route {{ipaddress}} 255.255.255.255 121.58.215.185
+{# remove route to globe #}
+no ip route {{ipaddress}} 255.255.255.255 203.177.110.117
+{# remove route to etpi #}
+no ip route {{ipaddress}} 255.255.255.255 180.232.122.13 
+
+{% endif %}
