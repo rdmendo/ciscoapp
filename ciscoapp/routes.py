@@ -9,8 +9,8 @@ from datetime import datetime
 from nornir.plugins.functions.text import print_result
 from flask_login import login_user, current_user, logout_user, login_required
 
+
 @app.route("/",  methods=['GET', 'POST'])
-@login_required
 def index():
     get_network = reversed(AdvertisedNetwork.query.order_by(AdvertisedNetwork.id).all()[-10:])
     return render_template('index.html', network=get_network)
@@ -118,6 +118,8 @@ def divert():
             new = AdvertisedNetwork(prefix=form.network.data, task=form.task.data)
             db.session.add(new)
             db.session.commit()
+            
+        print_result(result)
         
         #variables for flash messages
         hosts = user_divert.nr.inventory.hosts
@@ -140,16 +142,32 @@ def reroute():
     if form.validate_on_submit():
         user_reroute = ISPReroute(form.ipaddress.data, form.isp.data)
         result = user_reroute.nr.run(task=user_reroute.reroute)
-        flash(f"{form.ipaddress.data} has been routed to {form.isp.data} ", 'success')
-
-        # print_result(result)
+        user_reroute.nr.close_connections()
+        
+        hosts = user_reroute.nr.inventory.hosts
+        failed_host = result.failed_hosts.keys()
+        
+        for x in hosts:
+            if x in failed_host and x == 'CORE-R1' or x == 'CORE-R2' and form.isp.data == 'ETPI':
+                flash(f"Connection ERROR to {x} ---> {form.ipaddress.data}/32 is NOT routed to {form.isp.data}", 'danger')
+                
+            elif x in failed_host and x == 'CORE-R1' or x == 'CORE-R2' and form.isp.data == 'GLOBE':
+                flash(f"Connection ERROR to {x} ---> {form.ipaddress.data}/32 is NOT routed to {form.isp.data}", 'danger')
+                
+            elif x in failed_host and x == 'CORE-R1' or x == 'CORE-R2' and form.isp.data == 'CONVERGE':
+                flash(f"Connection ERROR to {x} ---> {form.ipaddress.data}/32 is NOT routed to {form.isp.data}", 'danger')
+                
+                
+        print_result(result)
     # add to database tables
-        new_route = Reroute(ipaddress=form.ipaddress.data, isp=form.isp.data)
+        new_route = Reroute(ipaddress=f"{form.ipaddress.data}/32", isp=form.isp.data)
         db.session.add(new_route)
         db.session.commit()
         
         return redirect(url_for('reroute', form=form))
     return render_template('reroute.html', title="Reroute", form=form, routes=get_reroute)
+
+    
 
 
     

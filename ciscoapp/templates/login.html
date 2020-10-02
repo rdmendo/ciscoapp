@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Material Admin</title>
+        <title>Network Automation - login </title>
 
         <!-- Vendors -->
 
@@ -89,6 +89,7 @@
                 </div>
 
                 <div class="login__block__body">
+                <form action="/register" method="POST">
                     <div class="form-group form-group--float form-group--centered">
                         <input type="text" class="form-control">
                         <label>Name</label>
@@ -97,7 +98,7 @@
 
                     <div class="form-group form-group--float form-group--centered">
                         <input type="text" class="form-control">
-                        <label>Email Address</label>
+                        <label>Username</label>
                         <i class="form-group__bar"></i>
                     </div>
 
@@ -106,20 +107,11 @@
                         <label>Password</label>
                         <i class="form-group__bar"></i>
                     </div>
-
-                    <div class="input-centered">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="">
-                                <i class="input-helper"></i>
-                                Accept the license agreement
-                            </label>
-                        </div>
-                    </div>
-
+                
                     <button class="btn btn--light btn--icon m-t-15"><i class="zmdi zmdi-plus"></i></button>
                 </div>
             </div>
+            </form>
 
             <!-- Forgot Password -->
             <div class="login__block" id="l-forget-password">

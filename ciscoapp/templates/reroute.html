@@ -5,7 +5,7 @@
 {% block content %}
    <div class="card" style="padding-bottom:10px;">
       <div class="card__header">
-         <h2>Reroute Chinese websites<small>Force the website outgoing traffic to specific</small></h2>
+         <h2>Reroute Chinese websites<small>Force the website outgoing traffic to specific Internet Service Provider</small></h2>
       </div>
    </div>
 
@@ -16,7 +16,15 @@
                <form action="/reroute" method="POST" >
                   {{form.hidden_tag()}}
                      {{form.ipaddress.label}}
-                     {{form.ipaddress(class="form-control form-control-sm")}}
+                     {% if form.ipaddress.errors %}
+                     {{form.ipaddress(class="form-control form-control-sm is-invalid")}}
+                        {% for error in form.ipaddress.errors %}
+                        <div class="alert alert-danger"> <span>{{ error }}</span> </div>
+                            {% endfor %}
+                     {% else %}
+                        {{ form.ipaddress(class="form-control form-control-lg") }}
+                    {% endif %}
+                     <br>
                      <br>
                      {{form.isp.label}}
                      {{form.isp(class="form-control form-control-sm")}}
@@ -31,7 +39,7 @@
                       <thead>
                           <tr>
                               <th>IP Address</th>
-                              <th>Routed To - Internet Provider </th>
+                              <th>Routed To</th>
                               <th>Date Added</th>
                           <tr>
                       </thead>

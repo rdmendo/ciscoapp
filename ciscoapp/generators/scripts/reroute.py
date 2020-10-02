@@ -9,7 +9,7 @@ import os
 class ISPReroute:
     
     os.environ["NET_TEXTFSM"] = "ntc-templates"
-    nr = InitNornir(config_file="/root/ciscoapp/ciscoapp/generators/scripts/config.yml")
+    nr = InitNornir(config_file="ciscoapp/generators/scripts/config.yml")
     
     def __init__(self, ipaddress, to_isp):
         super().__init__()
@@ -23,7 +23,7 @@ class ISPReroute:
         ipaddress = self.ipaddress,
         reroute_to=self.to_isp,
         template="reroute.j2", 
-        path=f"/root/ciscoapp/ciscoapp/generators/template/reroute/{task.host}")
+        path=f"ciscoapp/generators/template/reroute/{task.host}")
 
         task.host["acl"] = acl_template.result
         acl_output = task.host["acl"]

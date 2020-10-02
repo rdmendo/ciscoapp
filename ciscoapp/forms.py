@@ -49,7 +49,7 @@ class DivertForm(FlaskForm):
     submit = SubmitField('Mitigate')
     
 class RerouteForm(FlaskForm):
-    ipaddress = StringField("Website IP", validators= [DataRequired(), IPAddress()])
+    ipaddress = StringField("Website IP Address", validators= [DataRequired(), IPAddress()])
     isp =  SelectField('Route to',choices=choice_isp, validators=[DataRequired()])
     submit = SubmitField('Reroute')
     
