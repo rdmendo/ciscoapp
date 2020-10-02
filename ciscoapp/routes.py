@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, Response, session, request
 from ciscoapp import app, db, bcrypt
-from ciscoapp.forms import DhcpForm, QOSForm, NewForm, AddForm, DivertForm, RerouteForm, LoginForm
+from ciscoapp.forms import DhcpForm, QOSForm, NewForm, AddForm, DivertForm, RerouteForm, LoginForm, RegistrationForm
 from ciscoapp.generators.scripts.configenerate import GenerateDhcp , GenerateQos, GenerateCloudware, GenerateAdditional
 from ciscoapp.generators.scripts.divert import Divert
 from ciscoapp.generators.scripts.reroute import ISPReroute
@@ -14,6 +14,23 @@ from flask_login import login_user, current_user, logout_user, login_required
 def index():
     get_network = reversed(AdvertisedNetwork.query.order_by(AdvertisedNetwork.id).all()[-10:])
     return render_template('index.html', network=get_network)
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    
+    form = RegistrationForm()
+
+    if form.is_submitted():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, name=form.name.data, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
+        
+        flash('Your account has been created! You are now able to log in', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():

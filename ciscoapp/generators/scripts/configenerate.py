@@ -58,7 +58,7 @@ class GenerateCloudware:
     
     def create_office(self, name, level, inet, network_address, interface, bandwidth, implementation_type):
         network = ip_network(network_address)
-        template_dir = "/root/ciscoapp/ciscoapp/generators/template"
+        template_dir = "ciscoapp/generators/template"
         ENV = Environment(loader=FileSystemLoader(template_dir))
         new_office_baseline = ENV.get_template('new.j2')
 
@@ -77,7 +77,7 @@ class GenerateAdditional:
     
     def create_additional(self,new_link, existing_link ):
         network = ip_network(new_link)
-        template_dir = "/root/ciscoapp/ciscoapp/generators/template"
+        template_dir = "ciscoapp/generators/template"
         ENV = Environment(loader=FileSystemLoader(template_dir))
         new_office_baseline = ENV.get_template('additional.j2')
 
