@@ -35,7 +35,10 @@ class Divert:
         
     
     def clear_bgp(self, task):
-        task.run(netmiko_send_command, command_string="clear ip bgp * soft out")
+        bgp = task.run(netmiko_send_command, command_string="clear ip bgp * soft out")
+        
+
+        
         
 
         
