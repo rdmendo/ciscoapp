@@ -45,13 +45,13 @@
                     <ul class="dropdown-menu dropdown-menu--icon pull-right">
                         <li>
                             {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('account') }}"><i class="zmdi zmdi-account-circle"></i>{{ current_user.username }}</a>
-                            <a href="{{ url_for('logout') }}"><<i class="zmdi zmdi-run"></i>Log Out</a>
-                            <a href="{{ url_for('register') }}"><i class="zmdi zmdi-account-circle"></i>Register</a>
+                            <a href="{{ url_for('users.account') }}"><i class="zmdi zmdi-account-circle"></i>{{ current_user.username }}</a>
+                            <a href="{{ url_for('users.logout') }}"><<i class="zmdi zmdi-run"></i>Log Out</a>
+                            <a href="{{ url_for('users.register') }}"><i class="zmdi zmdi-account-circle"></i>Register</a>
                         </li>
                             {% else %}
                         <li>
-                            <a href="{{ url_for('login') }}"><i class="zmdi zmdi-account-o"></i>Login</a>
+                            <a href="{{ url_for('users.login') }}"><i class="zmdi zmdi-account-o"></i>Login</a>
                         </li>
                         {% endif %}
 

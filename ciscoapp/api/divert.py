@@ -9,7 +9,7 @@ import os
 class Divert:
     
     os.environ["NET_TEXTFSM"] = "ntc-templates"
-    nr = InitNornir(config_file="ciscoapp/generators/scripts/config.yml")
+    nr = InitNornir(config_file="ciscoapp/api/config.yml")
 
     def __init__(self, mitigate_address, action_to_be_done):
         super().__init__()
@@ -23,7 +23,7 @@ class Divert:
         net= ip_network(self.mitigate_address),
         mitigate=self.action_to_be_done,
         template="divert.j2", 
-        path=f"ciscoapp/generators/template/divert/{task.host}")
+        path=f"ciscoapp/jinja_templates/template/divert/{task.host}")
 
         task.host["acl"] = acl_template.result
         acl_output = task.host["acl"]
@@ -32,6 +32,7 @@ class Divert:
         task.run(task=netmiko_send_config,
         name="Pushing ACL Commands",
         config_commands=acl_send)
+        
     
     def clear_bgp(self, task):
         task.run(netmiko_send_command, command_string="clear ip bgp * soft out")

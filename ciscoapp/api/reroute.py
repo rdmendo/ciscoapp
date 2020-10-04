@@ -9,7 +9,7 @@ import os
 class ISPReroute:
     
     os.environ["NET_TEXTFSM"] = "ntc-templates"
-    nr = InitNornir(config_file="ciscoapp/generators/scripts/config.yml")
+    nr = InitNornir(config_file="ciscoapp/api/config.yml")
     
     def __init__(self, ipaddress, to_isp):
         super().__init__()
@@ -23,15 +23,14 @@ class ISPReroute:
         ipaddress = self.ipaddress,
         reroute_to=self.to_isp,
         template="reroute.j2", 
-        path=f"ciscoapp/generators/template/reroute/{task.host}")
+        path=f"ciscoapp/jinja_templates/template/reroute/{task.host}")
 
         task.host["acl"] = acl_template.result
         acl_output = task.host["acl"]
-        # acl_send = acl_output.splitlines()
+        acl_send = acl_output.splitlines()
 
         task.run(task=netmiko_send_config,
         name="Pushing Static Commands",
-        config_commands=acl_output)
+        config_commands=acl_send, delay_factor=.2)
         
-        print (acl_output)
     

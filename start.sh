@@ -1,6 +1,6 @@
 #!/bin/bash
 app="netapp-preprod"
 docker build -t ${app} .
-docker run -d -p 80:80 \
+docker run -v /etc/localtime:/etc/localtime:ro -d --restart unless-stopped -p 80:80 \
   --name=${app} \
   -v $PWD/app ${app}
