@@ -24,7 +24,7 @@ class GenerateDhcp:
         priv_split = priv.split('.')
         priv_addr = f"{priv_split[0]}.{priv_split[1]}"
 
-        template_dir = "ciscoapp/jinja_templates/template"
+        template_dir = "ciscoapp/config_templates/template"
         ENV = Environment(loader=FileSystemLoader(template_dir))
         dhcp_baseline = ENV.get_template('dhcp.j2')
 
@@ -41,7 +41,7 @@ class GenerateDhcp:
 class GenerateQos:
     
     def create_qos(self, policy_name, bandwidth, interface, device):
-        template_dir = "ciscoapp/jinja_templates/template"
+        template_dir = "ciscoapp/config_templates/template"
         ENV = Environment(loader=FileSystemLoader(template_dir))
         qos_baseline = ENV.get_template('qos.j2')
 
@@ -58,7 +58,7 @@ class GenerateCloudware:
     
     def create_office(self, name, level, inet, network_address, interface, bandwidth, implementation_type):
         network = ip_network(network_address)
-        template_dir = "ciscoapp/jinja_templates/template"
+        template_dir = "ciscoapp/config_templates/template"
         ENV = Environment(loader=FileSystemLoader(template_dir))
         new_office_baseline = ENV.get_template('new.j2')
 
@@ -77,7 +77,7 @@ class GenerateAdditional:
     
     def create_additional(self,new_link, existing_link ):
         network = ip_network(new_link)
-        template_dir = "ciscoapp/jinja_templates/template"
+        template_dir = "ciscoapp/config_templates/template"
         ENV = Environment(loader=FileSystemLoader(template_dir))
         new_office_baseline = ENV.get_template('additional.j2')
 

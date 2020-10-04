@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, Response, session, request, Blueprint
 from ciscoapp import app, db, bcrypt
-from ciscoapp.network_automation.forms import DivertForm, RerouteForm
+from ciscoapp.net.forms import DivertForm, RerouteForm
 from ciscoapp.api.divert import Divert
 from ciscoapp.api.reroute import ISPReroute
 from ciscoapp.models import AdvertisedNetwork, Reroute
@@ -8,9 +8,9 @@ from datetime import datetime
 from nornir.plugins.functions.text import print_result
 from flask_login import login_user, current_user, logout_user, login_required
 
-network_automation = Blueprint('network_automation', __name__)
+net = Blueprint('net', __name__)
 
-@network_automation.route("/divert", methods=['GET', 'POST'])
+@net.route("/divert", methods=['GET', 'POST'])
 @login_required
 def divert():
     form = DivertForm()
@@ -44,10 +44,10 @@ def divert():
             else:
                 flash(f"Successful task in {x}", 'success')
     
-        return redirect(url_for('network_automation.divert', form=form, result=result))
+        return redirect(url_for('net.divert', form=form, result=result))
     return render_template('divert.html', title="DDOS", form=form, network=get_network)
 
-@network_automation.route("/reroute", methods=['GET', 'POST'])
+@net.route("/reroute", methods=['GET', 'POST'])
 @login_required
 def reroute():
     form = RerouteForm()
@@ -64,5 +64,5 @@ def reroute():
         
         flash(f"{form.ipaddress.data} is rerouted to {form.isp.data}", 'success')
         
-        return redirect(url_for('network_automation.reroute', form=form))
+        return redirect(url_for('net.reroute', form=form))
     return render_template('reroute.html', title="Reroute", form=form, routes=get_reroute)

@@ -16,15 +16,15 @@ login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 
 from ciscoapp.users.routes import users
-from ciscoapp.network_automation.routes import network_automation
+from ciscoapp.net.routes import net
 from ciscoapp.main.routes import main
-from ciscoapp.base_config.routes import base_config
+from ciscoapp.gen.routes import gen
 
 
 app.register_blueprint(users)
-app.register_blueprint(network_automation)
+app.register_blueprint(net)
 app.register_blueprint(main)
-app.register_blueprint(base_config)
+app.register_blueprint(gen)
 
 
 
@@ -33,18 +33,21 @@ def create_app(config_class=Config):
     app.config.from_object(Config)
     
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
+        
     bcrypt.init_app(app)
     login_manager.init_app(app)
     
     from ciscoapp.users.routes import users
-    from ciscoapp.network_automation.routes import network_automation
+    from ciscoapp.net.routes import net
     from ciscoapp.main.routes import main
-    from ciscoapp.base_config.routes import base_config
+    from ciscoapp.gen.routes import gen
     
     app.register_blueprint(users)
-    app.register_blueprint(network_automation)
+    app.register_blueprint(net)
     app.register_blueprint(main)
-    app.register_blueprint(base_config)
+    app.register_blueprint(gen)
     
     return app
     

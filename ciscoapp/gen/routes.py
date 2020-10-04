@@ -1,12 +1,12 @@
 from flask import render_template, url_for, flash, redirect, Response, session, request, Blueprint
 from ciscoapp import app, db, bcrypt
-from ciscoapp.base_config.forms import DhcpForm, QOSForm, NewForm, AddForm
+from ciscoapp.gen.forms import DhcpForm, QOSForm, NewForm, AddForm
 from ciscoapp.api.configenerate import GenerateDhcp , GenerateQos, GenerateCloudware, GenerateAdditional
 from flask_login import login_user, current_user, logout_user, login_required
 
-base_config = Blueprint('base_config', __name__)
+gen = Blueprint('gen', __name__)
 
-@base_config.route("/dhcp", methods=['GET', 'POST'])
+@gen.route("/dhcp", methods=['GET', 'POST'])
 @login_required
 def dhcp():
     form = DhcpForm()
@@ -19,7 +19,7 @@ def dhcp():
         return render_template('dhcp.html',form=form, result=result )
     return render_template('dhcp.html',title="Dhcp", form=form)
 
-@base_config.route("/qos", methods=['GET', 'POST'])
+@gen.route("/qos", methods=['GET', 'POST'])
 @login_required
 def qos():
     form = QOSForm()
@@ -33,7 +33,7 @@ def qos():
     return render_template('qos.html',title="Qos", form=form)
 
 
-@base_config.route("/new", methods=['GET', 'POST'])
+@gen.route("/new", methods=['GET', 'POST'])
 @login_required
 def new():
     form = NewForm()
@@ -47,7 +47,7 @@ def new():
     return render_template('new.html',title="New Office", form=form)
 
 
-@base_config.route("/additional", methods=['GET', 'POST'])
+@gen.route("/additional", methods=['GET', 'POST'])
 @login_required
 def additional():
     form = AddForm()

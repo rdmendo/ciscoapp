@@ -23,7 +23,7 @@ class Divert:
         net= ip_network(self.mitigate_address),
         mitigate=self.action_to_be_done,
         template="divert.j2", 
-        path=f"ciscoapp/jinja_templates/template/divert/{task.host}")
+        path=f"ciscoapp/config_templates/template/divert/{task.host}")
 
         task.host["acl"] = acl_template.result
         acl_output = task.host["acl"]

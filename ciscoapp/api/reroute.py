@@ -23,7 +23,7 @@ class ISPReroute:
         ipaddress = self.ipaddress,
         reroute_to=self.to_isp,
         template="reroute.j2", 
-        path=f"ciscoapp/jinja_templates/template/reroute/{task.host}")
+        path=f"ciscoapp/config_templates/template/reroute/{task.host}")
 
         task.host["acl"] = acl_template.result
         acl_output = task.host["acl"]
