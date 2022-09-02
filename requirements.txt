@@ -5,4 +5,4 @@ Flask-SQLAlchemy==2.5
 Flask-WTF==0.14.3
 nornir==2.4.0
 ntc-templates==1.4.1
-Jinja2==2.11.1
+Jinja2==2.11.3
