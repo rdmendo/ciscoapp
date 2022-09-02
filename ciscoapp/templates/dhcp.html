@@ -15,17 +15,13 @@
             <div class="col-12 col-md-3 col-sm-3">       <!-- FORM PART -->
                <form action="/dhcp" method="POST" >
                   {{form.hidden_tag()}}
-                     {{form.network_address.label}}
-                     {{form.network_address(class="form-control form-control-sm")}}
+
                      <br>
                      {{form.pool.label}}
                      {{form.pool(class="form-control form-control-sm ")}}
                      <br>
                      {{form.private_ip.label}}
                      {{form.private_ip(class="form-control form-control-sm ")}}
-                     <br>
-                     {{form.interface.label}}
-                     {{form.interface(class="form-control form-control-sm ")}}
                      <br>
                      {{form.submit(class="btn btn--light")}}
                      <br>

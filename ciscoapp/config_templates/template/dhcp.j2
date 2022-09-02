@@ -3,10 +3,10 @@
 {%- set x = x|string %}
 {%- set vlan = x.split(".") %}
 {%- set vlan = vlan[-1] %}
-int {{interface}}.{{vlan}}
-encapsulation dot1q {{vlan}}
+vlan {{vlan}}
+!
+interface vlan {{vlan}}
 ip address {{priv_address}}.{{vlan}}.254 255.255.255.0
-ip nat inside
 !
 ip dhcp pool {{poolname}}_{{vlan}}
 network {{priv_address}}.{{vlan}}.0 255.255.255.0
@@ -16,11 +16,6 @@ dns-server 8.8.8.8 208.67.222.222 208.67.220.220
 ip dhcp excluded-address {{priv_address}}.{{vlan}}.254
 !
 ip access-list extended O{{poolname}}_{{vlan}}
-permit udp  {{priv_address}}.{{vlan}}.0 0.0.0.255 any
-permit tcp  {{priv_address}}.{{vlan}}.0 0.0.0.255 any
-permit icmp {{priv_address}}.{{vlan}}.0 0.0.0.255 any
-!
-ip nat pool net{{vlan}} {{ipaddr}} {{ipaddr}} netmask {{ mask }}
-ip nat inside source list O{{poolname}}_{{vlan}} pool net{{vlan}} overload
+permit ip any any
 !!!!
 {% endfor %}

@@ -12,12 +12,12 @@ def dhcp():
     form = DhcpForm()
     if form.is_submitted():
         user_dhcp = GenerateDhcp()
-        result = user_dhcp.create_pool(form.network_address.data, form.pool.data,form.interface.data, form.private_ip.data)
-        poolcount = user_dhcp.count_pool(form.network_address.data)
+        result = user_dhcp.create_pool("113.61.52.0/24", form.pool.data, form.private_ip.data)
         
-        flash(f"{poolcount} dhcp pool has been created with network  {form.network_address.data} for {form.pool.data.upper()} office.", 'success')
+        flash(f"dhcp pool has been created with network for {form.pool.data.upper()} office.", 'success')
         return render_template('dhcp.html',form=form, result=result )
     return render_template('dhcp.html',title="Dhcp", form=form)
+
 
 @gen.route("/qos", methods=['GET', 'POST'])
 @login_required

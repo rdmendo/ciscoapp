@@ -10,10 +10,10 @@ choice_level = open('ciscoapp/text_data/level.txt').read().splitlines()
 choice_implem = open('ciscoapp/text_data/implementation.txt').read().splitlines()
 
 class DhcpForm(FlaskForm):
-    network_address = StringField("Public Network Address", validators= [DataRequired(), IPAddress()])
+    # network_address = StringField("Public Network Address", validators= [DataRequired(), IPAddress()])
     pool =  StringField('DHCP Pool name',validators=[DataRequired(), Length(min=2, max=20)])
     private_ip = SelectField('Private IP',choices=choice_priv, validators=[DataRequired()])
-    interface = SelectField('Interface', choices=choice_int, validators=[DataRequired()])
+    # interface = SelectField('Interface', choices=choice_int, validators=[DataRequired()])
     submit = SubmitField('Generate')
     
 class QOSForm(FlaskForm):
