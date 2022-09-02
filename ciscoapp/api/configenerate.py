@@ -14,7 +14,7 @@ class GenerateDhcp:
 
         return "{}".format(network_list - 2)
 
-    def create_pool(self, network, poolname, interface, private_addr):
+    def create_pool(self, network, poolname, private_addr):
         ipnetaddr = ip_network(network)
         net_add = ipnetaddr.network_address
         net_mask = ipnetaddr.netmask
@@ -33,13 +33,11 @@ class GenerateDhcp:
                 ipaddr=ipnetaddr.hosts(),
                 mask=net_mask,
                 poolname = poolname,
-                priv_address = priv_addr,
-                interface = interface,)
+                priv_address = priv_addr)
         
         return from_template
     
 class GenerateQos:
-    
     def create_qos(self, policy_name, bandwidth, interface, device):
         template_dir = "ciscoapp/config_templates/template"
         ENV = Environment(loader=FileSystemLoader(template_dir))
@@ -87,6 +85,7 @@ class GenerateAdditional:
         
         return from_template
 
-# user_add = GenerateAdditional()
-# result = user_add.create_additional('113.61.52.0/27', '113.61.41.2')
+# dhcp = GenerateDhcp()
+# result = dhcp.create_pool('TESTPOOL', '10.10.10.0/24')
+# print(result)
 

@@ -11,7 +11,7 @@ class GenerateDhcp:
         return "{}".format(network_list - 2)
 
 
-    def create_pool(self, network, poolname, interface, private_addr):
+    def create_pool(self, network, poolname, private_addr):
         ipnetaddr = ip_network(network)
         net_add = ipnetaddr.network_address
         net_mask = ipnetaddr.netmask
@@ -21,7 +21,7 @@ class GenerateDhcp:
         priv_split = priv.split('.')
         priv_addr = f"{priv_split[0]}.{priv_split[1]}"
 
-        template_dir = "ciscoapp/generators/template"
+        template_dir = "/home/asoltes/ciscoapp/ciscoapp/config_templates/template/"
         ENV = Environment(loader=FileSystemLoader(template_dir))
         dhcp_baseline = ENV.get_template('dhcp.j2')
 
@@ -30,14 +30,13 @@ class GenerateDhcp:
                 ipaddr=ipnetaddr.hosts(),
                 mask=net_mask,
                 poolname = poolname,
-                priv_address = priv_addr,
-                interface = interface,)
+                priv_address = priv_addr)
         
         return from_template
     
     
 
-# user_dhcp = GenerateDhcp("113.61.52.0/24", "3D", "g0/0", "172.16.1.0/24")
-# result = user_dhcp.create_pool()
+# user_dhcp = GenerateDhcp()
+# result = user_dhcp.create_pool("113.61.52.0/24", "3D", "172.16.1.0/24")
 
 # print(result)
