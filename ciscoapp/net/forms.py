@@ -5,11 +5,13 @@ from wtforms.validators import InputRequired, DataRequired, Length, Email, Equal
 choice_task =  open('ciscoapp/text_data/divert_task.txt').read().splitlines()
 choice_allowed_ip = open('ciscoapp/text_data/allowed_network.txt').read().splitlines()
 choice_isp = open('ciscoapp/text_data/isp.txt').read().splitlines()
+choice_seq_num = open('ciscoapp/text_data/seq_num.txt').read().splitlines()
 
 class DivertForm(FlaskForm):
     # network =  StringField("Network", validators= [DataRequired(), IPAddress()])
     network = SelectField('Network', choices=choice_allowed_ip, validators=[DataRequired()])
     task =  SelectField('Task',choices=choice_task, validators=[DataRequired()])
+    seq_num =  SelectField('Sequence Number',choices=choice_seq_num, validators=[DataRequired()])
     submit = SubmitField('Mitigate')
     
 class RerouteForm(FlaskForm):
