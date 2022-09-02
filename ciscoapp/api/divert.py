@@ -11,17 +11,19 @@ class Divert:
     os.environ["NET_TEXTFSM"] = "ntc-templates"
     nr = InitNornir(config_file="ciscoapp/api/config.yml")
 
-    def __init__(self, mitigate_address, action_to_be_done):
+    def __init__(self, mitigate_address, action_to_be_done, seq_num):
         super().__init__()
 
         self.mitigate_address = mitigate_address
         self.action_to_be_done = action_to_be_done
+        self.seq_num = seq_num
 
     def advertise_to_incapsula(self, task):
         acl_template = task.run(task=template_file,
         name="Buildling ACL Configuration",
         net= ip_network(self.mitigate_address),
         mitigate=self.action_to_be_done,
+        seq=self.seq_num,
         template="divert.j2", 
         path=f"ciscoapp/config_templates/template/divert/{task.host}")
 

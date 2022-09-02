@@ -19,13 +19,13 @@ def divert():
 
     if form.validate_on_submit():
         #connections to devices
-        user_divert = Divert(form.network.data, form.task.data)
+        user_divert = Divert(form.network.data, form.task.data, form.seq_num.data)
         result = user_divert.nr.run(task=user_divert.advertise_to_incapsula)
         user_divert.nr.run(task=user_divert.clear_bgp)
         user_divert.nr.close_connections()
 
         if form.task.data == 'Divert All' or form.task.data == 'No Divert All':
-            new = AdvertisedNetwork(prefix="113.61.42 - 58.0/24", task=form.task.data)
+            new = AdvertisedNetwork(prefix="All Network Address Diverted", task=form.task.data)
             db.session.add(new)
             db.session.commit()
         else:
