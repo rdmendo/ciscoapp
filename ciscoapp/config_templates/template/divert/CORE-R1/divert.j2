@@ -1,34 +1,34 @@
 {% if mitigate == 'Divert All' %}
 router bgp 18190
-neighbor 172.17.192.221 distribute-list DIVERT_ALL_IMPERVA out
-neighbor 155.137.65.41 distribute-list DIVERT_ALL_ISP out
-neighbor 222.127.104.129 distribute-list DIVERT_ALL_ISP out
+neighbor 172.17.192.221 route-map DIVERT_ALL_IMPERVA out
+neighbor 155.137.65.41 route-map DIVERT_ALL_ISP out
+neighbor 222.127.104.129 route-map DIVERT_ALL_ISP out
 do clear ip bgp * soft out
 
 {% elif mitigate == 'No Divert All' %}
 router bgp 18190
-neighbor 172.17.192.221 distribute-list IMPERVA out
-neighbor 155.137.65.41 distribute-list RADIUS out
-neighbor 222.127.104.129 distribute-list GLOBE out
+neighbor 172.17.192.221 route-map IMPERVA out
+neighbor 155.137.65.41 route-map prepend_RADIUS out
+neighbor 222.127.104.129 route-map prepend_GLOBE out
 do clear ip bgp * soft out
 
 {% elif mitigate == 'Divert' %}
 ip access-list extended IMPERVA
 no {{seq}} deny ip {{net.network_address}} 0.0.0.255 any
 {{seq}} permit ip {{net.network_address}} 0.0.0.255 any
-ip access-list extended GLOBE
+ip access-list extended PREPEND_GLOBE
 no {{seq}} permit ip {{net.network_address}} 0.0.0.255 any
 {{seq}} deny ip {{net.network_address}} 0.0.0.255 any
-ip access-list extended RADIUS
+ip access-list extended PREPEND_RADIUS
+no {{seq}} permit ip {{net.network_address}} 0.0.0.255 any
+{{seq}} deny ip {{net.network_address}} 0.0.0.255 any
+ip access-list extended NORMAL
 no {{seq}} permit ip {{net.network_address}} 0.0.0.255 any
 {{seq}} deny ip {{net.network_address}} 0.0.0.255 any
 do clear ip bgp * soft out
 
 {% elif mitigate == 'No Divert' %}
-ip access-list extended GLOBE
-no {{seq}} deny ip {{net.network_address}} 0.0.0.255 any
-{{seq}} permit ip {{net.network_address}} 0.0.0.255 any
-ip access-list extended RADIUS
+ip access-list extended NORMAL
 no {{seq}} deny ip {{net.network_address}} 0.0.0.255 any
 {{seq}} permit ip {{net.network_address}} 0.0.0.255 any
 ip access-list extended IMPERVA
