@@ -1,26 +1,26 @@
 {% if mitigate == 'Divert All' %}
 router bgp 18190
-neighbor 192.168.31.145 distribute-list DIVERT_ALL_IMPERVA out
-neighbor 112.199.74.41 distribute-list DIVERT_ALL_ISP out
+neighbor 192.168.31.145 route-map DIVERT_ALL_IMPERVA out
+neighbor 112.199.74.41 route-map DIVERT_ALL_ISP out
 do clear ip bgp * soft out
 
 {% elif mitigate =='No Divert All' %}
 router bgp 18190
-neighbor 192.168.31.145 distribute-list IMPERVA out
-neighbor 112.199.74.41 distribute-list ETPI out
+neighbor 192.168.31.145 route-map IMPERVA out
+neighbor 112.199.74.41 route-map prepend_ETPI out
 do clear ip bgp * soft out
 
 {% elif mitigate == 'Divert' %}
 ip access-list extended IMPERVA
 no {{seq}} deny ip {{net.network_address}} 0.0.0.255 any
 {{seq}} permit ip {{net.network_address}} 0.0.0.255 any
-ip access-list extended ETPI
+ip access-list extended PREPEND_ETPI
 no {{seq}} permit ip {{net.network_address}} 0.0.0.255 any
 {{seq}} deny ip {{net.network_address}} 0.0.0.255 any
 do clear ip bgp * soft out
 
 {% elif mitigate == 'No Divert' %}
-ip access-list extended ETPI
+ip access-list extended NORMAL
 no {{seq}} deny ip {{net.network_address}} 0.0.0.255 any
 {{seq}} permit ip {{net.network_address}} 0.0.0.255 any
 ip access-list extended IMPERVA
